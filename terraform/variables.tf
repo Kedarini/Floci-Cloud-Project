@@ -8,8 +8,8 @@ variable "aws_region" {
   type    = string
 }
 
-locals {
-  bucket_name = "bucket-${var.environment}"
-  vpc_name    = "vpc-${var.environment}"
-  ec2_name    = "ec2-${var.environment}"
+variable "instance_count" {
+  description = "Number of EC2 instances to create"
+  type        = number
+  default     = 1
 }
