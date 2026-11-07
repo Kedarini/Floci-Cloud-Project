@@ -17,13 +17,42 @@ resource "aws_s3_bucket" "first_bucket" {
 }
 
 resource "aws_instance" "example" {
-  count         = var.instance_count
   ami           = "resolve:ssm:/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64"
   instance_type = "t2.micro"
-  region        = var.aws_region
 
-  tags = {
-    Name        = local.ec2_name
-    Environment = var.environment
+  count = var.instance_count
+
+  monitoring                  = var.enable_monitoring
+  associate_public_ip_address = var.associate_public_ip
+
+  region = tolist(var.aws_region)[0]
+
+  tags = var.instance_tags
+}
+
+resource "aws_security_group" "floci_sg" {
+  name = "${var.server_config.name}-sg"
+
+  ingress {
+    from_port   = var.network_config[2]
+    to_port     = var.network_config[2]
+    protocol    = "tcp"
+    cidr_blocks = var.allowed_cidr_blocks
   }
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = var.allowed_cidr_blocks
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = var.instance_tags
 }

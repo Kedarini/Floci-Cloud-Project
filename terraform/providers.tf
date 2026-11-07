@@ -8,7 +8,7 @@ terraform {
 }
 
 provider "aws" {
-  region = var.aws_region
+  region = tolist(var.aws_region)[0]
 
   # Configuration for Floci
   access_key = "test"
