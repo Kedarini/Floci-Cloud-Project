@@ -3,7 +3,7 @@ terraform {
   backend "s3" {
     bucket       = "tfstate"
     key          = "terraform.tfstate"
-    region       = var.aws_region
+    region       = tolist(var.aws_region)[0]
     encrypt      = true
     use_lockfile = true
 

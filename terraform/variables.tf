@@ -59,3 +59,8 @@ variable "server_config" {
     backup_enabled = false
   }
 }
+
+variable "bucket_names" {
+  type    = set(string)
+  default = ["bucket-1", "bucket-2", "bucket-3", "bucket-4", "bucket-5"]
+}

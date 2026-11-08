@@ -56,3 +56,10 @@ resource "aws_security_group" "floci_sg" {
 
   tags = var.instance_tags
 }
+
+resource "aws_s3_bucket" "bucket" {
+  for_each = var.bucket_names
+  bucket   = each.key
+
+  tags = var.instance_tags
+}
