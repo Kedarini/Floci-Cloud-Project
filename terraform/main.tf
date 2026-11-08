@@ -62,4 +62,6 @@ resource "aws_s3_bucket" "bucket" {
   bucket   = each.key
 
   tags = var.instance_tags
+
+  depends_on = [aws_s3_bucket.first_bucket]
 }
