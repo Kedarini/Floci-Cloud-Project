@@ -1,66 +1,85 @@
-variable "environment" {
-  default = "dev"
-  type    = string
-}
+# ==============================
+# General Variables
+# ==============================
 
 variable "aws_region" {
-  default = ["us-east-1", "eu-central-1"]
-  type    = set(string)
+  description = "AWS region for resources"
+  type        = string
+  default     = "us-east-1"
 }
 
-variable "instance_count" {
-  description = "Number of EC2 instances to create"
-  type        = number
-  default     = 1
+variable "environment" {
+  description = "Environment name (dev, staging, prod)"
+  type        = string
+  default     = "dev"
 }
 
-variable "enable_monitoring" {
-  type    = bool
-  default = true
-}
-
-variable "associate_public_ip" {
-  type    = bool
-  default = false
-}
-
-variable "instance_tags" {
-  type = map(string)
-  default = {
-    "Environment" = "Dev"
-    "Project"     = "Floci-Cloud"
-    "Owner"       = "DevOps"
-  }
-}
-
-variable "allowed_cidr_blocks" {
-  type    = list(string)
-  default = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
-}
-
-variable "network_config" {
-  type    = tuple([string, string, number])
-  default = ["10.0.0.0/16", "10.0.1.0/24", 80]
-}
-
-variable "server_config" {
-  type = object({
-    name           = string
-    instance_type  = string
-    monitoring     = bool
-    storage_gb     = number
-    backup_enabled = bool
-  })
-  default = {
-    name           = "Floci-Cloud"
-    instance_type  = "t2.micro"
-    monitoring     = true
-    storage_gb     = 20
-    backup_enabled = false
-  }
-}
+# ==============================
+# S3 Bucket Variables
+# ==============================
 
 variable "bucket_names" {
-  type    = set(string)
-  default = ["bucket-1", "bucket-2", "bucket-3", "bucket-4", "bucket-5"]
+  description = "Set of S3 bucket names to create"
+  type        = set(string)
+  default     = ["demo-lifecycle-bucket-001", "demo-lifecycle-bucket-002"]
+}
+
+variable "allowed_regions" {
+  description = "List of allowed AWS regions"
+  type        = list(string)
+  default     = ["us-east-1", "us-west-2", "eu-west-1", "ap-south-1"]
+}
+
+# ==============================
+# EC2 Variables
+# ==============================
+
+variable "instance_type" {
+  description = "EC2 instance type"
+  type        = string
+  default     = "t2.micro"
+}
+
+variable "instance_name" {
+  description = "Name tag for EC2 instance"
+  type        = string
+  default     = "lifecycle-demo-instance"
+}
+
+# ==============================
+# RDS Variables
+# ==============================
+
+variable "db_username" {
+  description = "Database administrator username"
+  type        = string
+  default     = "admin"
+  sensitive   = true
+}
+
+variable "db_password" {
+  description = "Database administrator password"
+  type        = string
+  default     = "ChangeMe123!"
+  sensitive   = true
+}
+
+variable "db_name" {
+  description = "Initial database name"
+  type        = string
+  default     = "myappdb"
+}
+
+# ==============================
+# Tags
+# ==============================
+
+variable "resource_tags" {
+  description = "Common tags to apply to resources"
+  type        = map(string)
+  default = {
+    Environment = "dev"
+    Team        = "DevOps"
+    CostCenter  = "Engineering"
+  }
 }

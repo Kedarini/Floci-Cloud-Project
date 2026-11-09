@@ -5,10 +5,12 @@ terraform {
       version = "~> 6.0"
     }
   }
+
+  required_version = ">= 1.0"
 }
 
 provider "aws" {
-  region = tolist(var.aws_region)[0]
+  region = var.aws_region
 
   # Configuration for Floci
   access_key = "test"
@@ -21,8 +23,10 @@ provider "aws" {
 
   # Every aws service need to be declared here to http://localhost:4566
   endpoints {
-    ec2 = "http://localhost:4566"
-    s3  = "http://localhost:4566"
+    ec2         = "http://localhost:4566"
+    s3          = "http://localhost:4566"
+    autoscaling = "http://localhost:4566"
+    dynamodb    = "http://localhost:4566"
   }
 }
 
