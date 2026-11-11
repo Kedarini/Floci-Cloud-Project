@@ -10,7 +10,6 @@ locals {
     description = "Allow traffic on port ${port}"
     }
   ]
-
 }
 
 # replace eg.
